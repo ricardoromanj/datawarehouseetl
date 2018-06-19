@@ -1,0 +1,37 @@
+     1	Health Service Area
+     2	Hospital County
+     3	Operating Certificate Number
+     4	Facility Id
+     5	Facility Name
+     6	Age Group
+     7	Zip Code - 3 digits
+     8	Gender
+     9	Race
+    10	Ethnicity
+    11	Length of Stay
+    12	Type of Admission
+    13	Patient Disposition
+    14	Discharge Year
+    15	CCS Diagnosis Code
+    16	CCS Diagnosis Description
+    17	CCS Procedure Code
+    18	CCS Procedure Description
+    19	APR DRG Code
+    20	APR DRG Description
+    21	APR MDC Code
+    22	APR MDC Description
+    23	APR Severity of Illness Code
+    24	APR Severity of Illness Description
+    25	APR Risk of Mortality
+    26	APR Medical Surgical Description
+    27	Payment Typology 1
+    28	Payment Typology 2
+    29	Payment Typology 3
+    30	Attending Provider License Number
+    31	Operating Provider License Number
+    32	Other Provider License Number
+    33	Birth Weight
+    34	Abortion Edit Indicator
+    35	Emergency Department Indicator
+    36	Total Charges
+    37	Total Costs
