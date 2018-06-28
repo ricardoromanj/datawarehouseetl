@@ -48,7 +48,7 @@ print("Connecting to the database...")
 engine = create_engine('mssql://LAPTOP-TH3PDN0I/Group_8_DB?driver=ODBC+Driver+17+for+SQL+Server')
 print("Connected.")
 
-csvfile = './sample.csv'
+csvfile = '../SPARC.csv'
 print("File name to load: " + csvfile)
 
 ################################################################################
@@ -249,13 +249,14 @@ print("Load complete. Loaded " + str(rowcount) + " rows.")
 ################################################################################
 jobutils.printStepStart("80")
 
+print("Loading Demographics dimension from file " + csvfile + "...")
+
 # Read Original CSV file
 location_df = pd.read_csv(csvfile,
                  header=1,
                  usecols=DimLocationRecord().get_column_indeces(),
                  names=DimLocationRecord().get_column_names(),
-                 dtype=DimLocationRecord().get_column_types(),
-                 converters=DimLocationRecord().get_column_converters()
+                 dtype=DimLocationRecord().get_column_types()
                          )
 
 # Drop duplicate rows

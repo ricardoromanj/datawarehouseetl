@@ -94,12 +94,6 @@ class DischargeRecord():
             intInd = 1
         return intInd
 
-    def conv_zipcode(self, zipcode):
-        if type(zipcode) is str and zipcode == 'OOS':
-            return 0
-        else:
-            return int(zipcode)
-
     def conv_money(self, amount):
         amountStr = str(amount)
         amountStr = amountStr.replace('$', '')
@@ -123,6 +117,12 @@ class DischargeRecord():
             'DEC': 12
         }
         return MONTHS[month]
+
+    def conv_length_stay(self, lenStay):
+        amountStr = str(lenStay)
+        amountStr = amountStr.replace('+', '')
+        amountStr = amountStr.replace(' ', '')
+        return float(amountStr)
 
     def get_column_indeces(self):
         return self.COLUMN_INDECES
@@ -325,11 +325,9 @@ class DimLocationRecord(DischargeRecord):
         self.COLUMN_TYPES = {
             'HealthServiceArea': 'str',
             'HospitalCounty': 'str',
-            'FacilityID': 'int64',
-            'FacilityName': 'str'
-        }
-        self.COLUMN_CONV = {
-            'ZipCode': self.conv_zipcode
+            'FacilityID': 'str',
+            'FacilityName': 'str',
+            'ZipCode': 'str'
         }
 
 class FactDischarge(DischargeRecord):
@@ -444,10 +442,10 @@ class FactDischarge(DischargeRecord):
             'Ethnicity': 'str',
             'HealthServiceArea': 'str',
             'HospitalCounty': 'str',
-            'FacilityID': 'int64',
+            'FacilityID': 'str',
             'FacilityName': 'str',
-            'BirthWeight': 'float64',
-            'LengthStay': 'float64'
+            'ZipCode': 'str',
+            'BirthWeight': 'float64'
         }
         self.COLUMN_CONV = {
             'DischargeMonth': self.conv_month,
@@ -455,5 +453,5 @@ class FactDischarge(DischargeRecord):
             'EmergencyIndicator': self.conv_indToInt,
             'TotalCharges': self.conv_money,
             'TotalCosts': self.conv_money,
-            'ZipCode': self.conv_zipcode
+            'LengthStay': self.conv_length_stay
         }

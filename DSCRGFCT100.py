@@ -41,7 +41,7 @@ print("Connecting to the database...")
 engine = create_engine('mssql://LAPTOP-TH3PDN0I/Group_8_DB?driver=ODBC+Driver+17+for+SQL+Server')
 print("Connected.")
 
-csvfile = './sample.csv'
+csvfile = '../SPARC_10k_part-ce.csv'
 print("File name to load: " + csvfile)
 
 ################################################################################
@@ -66,7 +66,7 @@ print("Done. Dimensions loaded.")
 
 ################################################################################
 #
-# Job Step 20: Load Facts from CSV
+# Job Step 20: Extract Facts from CSV
 #
 ################################################################################
 jobutils.printStepStart("20")
@@ -74,7 +74,7 @@ jobutils.printStepStart("20")
 print("Loading fact from csv file: " + csvfile)
 
 # Load facts from csv
-fact_discharge_df = pd.read_csv('./sample.csv',
+fact_discharge_df = pd.read_csv(csvfile,
                                 header=0,
                                 names=FactDischarge().get_column_names(),
                                 dtype=FactDischarge().get_column_types(),
@@ -86,13 +86,14 @@ print("Done.")
 
 ################################################################################
 #
-# Job Step 30: Load Facts from CSV
+# Job Step 30: Load Facts to DB
 #
 ################################################################################
 jobutils.printStepStart("30")
 
 print("Loading fact table...")
 
+df_array = []
 rowcount = 0
 
 # Iterate fact dataframe
@@ -169,9 +170,15 @@ for fact in fact_discharge_df.itertuples():
         'TotalCosts': fact[38]
     }
 
-    fact_record_df = pd.DataFrame(fact_record, index=[0])
-    fact_record_df.to_sql('FactDischarge', if_exists='append', con=engine, index=False)
+    df_array.append(fact_record)
     rowcount += 1
+
+    if (rowcount % 500) == 0:
+        fact_record_df = pd.DataFrame(df_array)
+        df_array = []
+        fact_record_df.to_sql('FactDischarge', if_exists='append', con=engine, index=False)
+        print("Loaded " + str(rowcount) + " rows...")
+
 
 print("Done. Loaded " + str(rowcount) + " rows.")
 
